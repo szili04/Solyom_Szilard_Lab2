@@ -7,4 +7,6 @@ public class Solyom_Szilard_Lab2Context(DbContextOptions<Solyom_Szilard_Lab2Cont
     public DbSet<Solyom_Szilard_Lab2.Models.Author> Author { get; set; } = default!;
     public DbSet<Solyom_Szilard_Lab2.Models.Category> Category { get; set; } = default!;
     public DbSet<Solyom_Szilard_Lab2.Models.BookCategory> BookCategory { get; set; } = default!;
+    public DbSet<Solyom_Szilard_Lab2.Models.Member> Member { get; set; } = default!;
+    public DbSet<Solyom_Szilard_Lab2.Models.Borrowing> Borrowing { get; set; } = default!;
 }
