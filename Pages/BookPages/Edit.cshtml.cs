@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -5,6 +6,7 @@ using Solyom_Szilard_Lab2.Models;
 
 namespace Solyom_Szilard_Lab2.Pages.BookPages
 {
+    [Authorize(Roles = "Admin")]
     public class EditModel : BookCategoriesPageModel
     {
         private readonly Solyom_Szilard_Lab2Context _context;
@@ -15,7 +17,7 @@ namespace Solyom_Szilard_Lab2.Pages.BookPages
         }
 
         [BindProperty]
-        public Book Book { get; set; }
+        public Book Book { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -24,17 +26,18 @@ namespace Solyom_Szilard_Lab2.Pages.BookPages
                 return NotFound();
             }
 
-            Book = await _context.Book
+            var book = await _context.Book
                 .Include(b => b.Author)
                 .Include(b => b.Publisher)
                 .Include(b => b.BookCategories).ThenInclude(b => b.Category)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);
 
-            if (Book == null)
+            if (book == null)
             {
                 return NotFound();
             }
+            Book = book;
 
             PopulateAssignedCategoryData(_context, Book);
 

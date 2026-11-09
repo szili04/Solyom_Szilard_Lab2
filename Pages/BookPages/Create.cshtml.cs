@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Solyom_Szilard_Lab2.Models;
 
 namespace Solyom_Szilard_Lab2.Pages.BookPages
 {
+    [Authorize(Roles = "Admin")]
     public class CreateModel : BookCategoriesPageModel
     {
         private readonly Solyom_Szilard_Lab2Context _context;
@@ -30,7 +32,7 @@ namespace Solyom_Szilard_Lab2.Pages.BookPages
         }
 
         [BindProperty]
-        public Book Book { get; set; }
+        public Book Book { get; set; } = default!;
 
         public async Task<IActionResult> OnPostAsync(string[] selectedCategories)
         {
@@ -40,11 +42,10 @@ namespace Solyom_Szilard_Lab2.Pages.BookPages
                 newBook.BookCategories = new List<BookCategory>();
                 foreach (var cat in selectedCategories)
                 {
-                    var catToAdd = new BookCategory
+                    newBook.BookCategories.Add(new BookCategory
                     {
                         CategoryID = int.Parse(cat)
-                    };
-                    newBook.BookCategories.Add(catToAdd);
+                    });
                 }
             }
             Book.BookCategories = newBook.BookCategories;

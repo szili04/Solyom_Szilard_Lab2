@@ -127,6 +127,7 @@ public class RegisterModel : PageModel
             if (result.Succeeded)
             {
                 _logger.LogInformation("User created a new account with password.");
+                await _userManager.AddToRoleAsync(user, "User");
 
                 // pasul 20: salvam emailul si in tabelul Member
                 var newMember = new Member
